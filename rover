@@ -1,0 +1,93 @@
+import RPi.GPIO as GPIO
+import time
+from bluedot import BlueDot
+from signal import pause
+
+
+def init():
+� � GPIO.setmode(GPIO.BOARD)
+� � GPIO.setup(33,GPIO.OUT)#Enable
+� � pwm1=GPIO.PWM(33, 90)
+� � GPIO.setup(31,GPIO.OUT)#a
+� � GPIO.setup(29,GPIO.OUT)#b
+� � GPIO.setup(32,GPIO.OUT)#enable2
+� � pwm1=GPIO.PWM(32, 100)
+� � GPIO.setup(18,GPIO.OUT)#2a
+� � GPIO.setup(16,GPIO.OUT)#2b
+� ��
+
+def forward():
+� � init()
+� � GPIO.output(33, True)
+� � GPIO.output(31, False)
+� � GPIO.output(29, True)
+� � GPIO.output(32, True)
+� � GPIO.output(18, False)
+� � GPIO.output(16, True)
+� � time.sleep()
+� � GPIO.cleanup()
+
+def reverse():
+� � init()
+� � GPIO.output(33, True)
+� � GPIO.output(31, True)
+� � GPIO.output(29, False)
+� � GPIO.output(32, True)
+� � GPIO.output(18, True)
+� � GPIO.output(16, False)
+� � time.sleep()
+� � GPIO.cleanup()
+
+def left():
+� � init()
+� � GPIO.output(33, True)
+� � GPIO.output(31, True)
+� � GPIO.output(29, False)
+� � GPIO.output(32, True)
+� � GPIO.output(18, False)
+� � GPIO.output(16, True)
+� � time.sleep()
+� � GPIO.cleanup()
+
+def right():
+� � init()
+� � GPIO.output(33, True)
+� � GPIO.output(31, False)
+� � GPIO.output(29, True)
+� � GPIO.output(32, True)
+� � GPIO.output(18, True)
+� � GPIO.output(16, False)
+� � time.sleep()
+� � GPIO.cleanup()
+� ��
+def stop():
+� � init()
+� � GPIO.output(33, False)
+� � GPIO.output(31, False)
+� � GPIO.output(29, False)
+� � GPIO.output(32, False)
+� � GPIO.output(18, False)
+� � GPIO.output(16, False)
+� � time.sleep()
+� � GPIO.cleanup()
+
+
+def dpad(pos):
+� � if pos.top:
+� � � � print("up")
+� � � � forward()
+� � elif pos.bottom:
+� � � � print("down")
+� � � � reverse()
+� � elif pos.left:
+� � � � print("left")
+� � � � left()
+� � elif pos.right:
+� � � � print("right")
+� � � � right()
+
+bd = BlueDot()
+bd.when_pressed = dpad
+bd.when_released = stop
+
+pause()
